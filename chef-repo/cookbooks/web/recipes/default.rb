@@ -109,10 +109,10 @@ end
 end
 
 # git install
-bash "install_git" do
-  not_if { File.exists?("/vagrant/composer") }
+bash "remane-composer" do
+  not_if { File.exists?("/vagrant/laravel/composer") }
   user 'vagrant'
-  cwd '/vagrant'
+  cwd '/vagrant/laravel'
   code "mv composer.phar composer";
 end
 
@@ -125,7 +125,7 @@ execute "install-lanavel" do
 end
 
 # install Lanavel framework
-execute "install-lanavel" do
+execute "create-lanavel-project" do
     command "./composer create-project laravel/laravel laravelapp --prefer-dist"
     cwd '/vagrant/laravel'
     not_if { File.exists?("/vagrant/laravel/laravelapp") } # @todo
