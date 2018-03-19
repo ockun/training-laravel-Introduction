@@ -108,6 +108,14 @@ end
   end
 end
 
+# git install
+bash "install_git" do
+  not_if { File.exists?("/vagrant/composer") }
+  user 'vagrant'
+  cwd '/vagrant'
+  code "mv composer.phar composer";
+end
+
 # install Lanavel framework
 execute "install-lanavel" do
     command "./composer global require \"laravel/installer=~1.1\""
