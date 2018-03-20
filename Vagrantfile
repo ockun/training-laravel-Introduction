@@ -7,6 +7,10 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
+  if Vagrant.has_plugin?("vagrant-vbguest") then
+    config.vbguest.auto_update = true # Guest Additionsの自動アップデート
+    config.vbguest.no_remote = false # Guest Additionsのisoファイルをリモートからダウンロード
+  end
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.

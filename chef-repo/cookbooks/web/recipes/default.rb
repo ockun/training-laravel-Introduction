@@ -14,12 +14,12 @@ execute "yum-update" do
   action :run
 end
 
-package "httpd"
 
-service 'httpd' do
-  action [:enable, :start]
-end
-
+# package "httpd"
+#
+# service 'httpd' do
+#   action [:enable, :start]
+# end
 # epel
 package 'epel-release.noarch' do
   action :install
@@ -86,19 +86,24 @@ bash "install_git" do
   EOH
 end
 
-directory '/vagrant/laravel' do
-  mode '0755'
-  owner 'vagrant'
-  group 'vagrant'
+directory '/vagrant' do
   action :create
+  owner  "vagrant"
+  group "vagrant"
 end
 
 # install composer global
 execute "install-composer" do
-  creates "/vagrant/laravel/composer"
-  cwd '/vagrant/laravel'
-  command "curl -sS https://getcomposer.org/installer | php"
+  creates "/vagrant/composer"
+  cwd '/vagrant'
+  command "curl -sS https://getcomposer.org/installer | php "
 end
+
+# execute "remane-composer" do
+#   creates "/vagrant/composer"
+#   cwd '/vagrant'
+#   command "mv composer.phar composer"
+# end
 
 # install for laravel
 %w(zip unzip).each do |pkg|
@@ -108,34 +113,36 @@ end
   end
 end
 
-# git install
-bash "remane-composer" do
-  not_if { File.exists?("/vagrant/laravel/composer") }
-  user 'vagrant'
-  cwd '/vagrant/laravel'
-  code "mv composer.phar composer";
-end
-
 # install Lanavel framework
 execute "install-lanavel" do
-    command "./composer global require \"laravel/installer=~1.1\""
-    cwd '/vagrant/laravel'
+    command "./composer.phar global require \"laravel/installer=~1.1\""
+    cwd '/vagrant'
     not_if { File.exists?("/usr/bin/docbook2x-texi") } # @todo
     action :run
 end
 
 # install Lanavel framework
 execute "create-lanavel-project" do
-    command "./composer create-project laravel/laravel laravelapp --prefer-dist"
-    cwd '/vagrant/laravel'
-    not_if { File.exists?("/vagrant/laravel/laravelapp") } # @todo
+    command "./composer.phar create-project laravel/laravel laravelapp --prefer-dist"
+    cwd '/vagrant'
+    not_if { File.exists?("/vagrant/laravelapp") } # @todo
     action :run
 end
 
 # link for git
-execute "ln-document-root" do
-    user "root"
-    command "ln -s /vagrant/laravel /var/www/laravel"
-    creates "/var/www/laravel"
-    action :run
+# execute "ln-document-root" do
+#     user "root"
+#     command "ln -s /vagrant /vagrant"
+#     creates "/vagrant"
+#     action :run
+# end
+
+package "nginx"
+
+template '/etc/nginx/nginx.conf' do
+  source 'nginx.conf.erb'
+end
+
+service 'nginx' do
+  action [:enable, :start]
 end
