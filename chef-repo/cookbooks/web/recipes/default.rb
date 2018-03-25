@@ -94,7 +94,7 @@ end
 
 # install composer global
 execute "install-composer" do
-  creates "/vagrant/composer"
+  creates "/vagrant/composer.phar"
   cwd '/vagrant'
   command "curl -sS https://getcomposer.org/installer | php "
 end
