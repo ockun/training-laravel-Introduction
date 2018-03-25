@@ -1,3 +1,4 @@
-.vagrant
-laravel
-/.metadata/
+.vagrant/
+laravel/
+.metadata/
+RemoteSystemsTempFiles/
