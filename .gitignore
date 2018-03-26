@@ -4,3 +4,4 @@ laravelapp/
 .metadata/
 RemoteSystemsTempFiles/
 chef-repo-prev/
+composer.phar/
