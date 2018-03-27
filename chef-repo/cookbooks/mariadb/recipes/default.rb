@@ -12,12 +12,18 @@ end
 
 service 'mariadb' do
   action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
 end
 
-# template '/etc/nginx/nginx.conf' do
-#   source 'nginx.conf.erb'
-#   owner 'root'
-#   group 'root'
-#   mode 0644
-#   notifies :reload, 'service[nginx]'
-# end
+execute "set_root_pass" do
+  command "mysqladmin -u root password '#{node['mariadb']['root_pass']}'"
+  only_if "mysql -u root -e 'show databases;'"
+end
+
+template '/etc/my.cnf.d/server.cnf' do
+  source 'server.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :restart, 'service[mariadb]'
+end

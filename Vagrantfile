@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
   # vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = true # Guest Additionsの自動アップデート
-    config.vbguest.no_remote = false # Guest Additionsのisoファイルをリモートからダウンロード
+    config.vbguest.no_remote = true # Guest Additionsのisoファイルをリモートからダウンロード
   end
 
   # vagrant-cachier
@@ -85,13 +85,13 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = './chef-repo/cookbooks'
     chef.add_recipe 'web'
+    chef.add_recipe 'mariadb'
     # chef.add_recipe 'git'
-    # chef.json = {
-    #   :git => {
-    #     :version    => '2.9.5',
-    #     :source_uri => 'https://git-core.googlecode.com/files/git-2.9.5.tar.gz'
-    #   }
-    # }
+    chef.json = {
+      mariadb: {
+        root_pass: 'fosbury1027'
+      }
+    }
   end
   # バージョン指定が有効にならないので一旦ペンド
   # config.vm.provision :chef_solo do |chef|
