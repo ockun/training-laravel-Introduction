@@ -94,7 +94,7 @@ end
 
 # install composer global
 execute "install-composer" do
-  creates "/vagrant/composer"
+  creates "/vagrant/composer.phar"
   cwd '/vagrant'
   command "curl -sS https://getcomposer.org/installer | php "
 end
@@ -139,10 +139,14 @@ end
 
 package "nginx"
 
-template '/etc/nginx/nginx.conf' do
-  source 'nginx.conf.erb'
-end
-
 service 'nginx' do
   action [:enable, :start]
+end
+
+template '/etc/nginx/nginx.conf' do
+  source 'nginx.conf.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :reload, 'service[nginx]'
 end
