@@ -12,6 +12,13 @@
   end
 end
 
+package 'php-mysqlnd' do
+  flush_cache [:before]
+  action [:install, :upgrade]
+  options "--enablerepo=remi --enablerepo=remi-php72"
+  notifies :reload, 'service[nginx]'
+end
+
 service 'mariadb' do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
