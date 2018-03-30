@@ -85,8 +85,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = './chef-repo/cookbooks'
     chef.add_recipe 'web'
-    chef.add_recipe 'laravel'
     chef.add_recipe 'mariadb'
+    chef.add_recipe 'laravel'
+    chef.add_recipe 'laravel::configure_database'
   end
   # バージョン指定が有効にならないので一旦ペンド
   # config.vm.provision :chef_solo do |chef|
