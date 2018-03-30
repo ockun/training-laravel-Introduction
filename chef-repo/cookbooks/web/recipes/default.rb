@@ -42,7 +42,7 @@ package 'php' do
   options "--enablerepo=remi --enablerepo=remi-php72"
 end
 
-%w(php-openssl php-common php-mbstring php-xml php-pdo php-mbstring).each do |pkg|
+%w(php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm).each do |pkg|
   package pkg do
     action [:install, :upgrade]
     options "--enablerepo=remi --enablerepo=remi-php72"
