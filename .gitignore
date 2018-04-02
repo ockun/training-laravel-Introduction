@@ -4,3 +4,4 @@
 /.metadata/
 /RemoteSystemsTempFiles/
 /composer.phar/
+/chef-repo/nodes/localhost.json

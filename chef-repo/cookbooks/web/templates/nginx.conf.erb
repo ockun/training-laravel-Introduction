@@ -1,5 +1,7 @@
 
 #user  nobody;
+user nginx;
+group user;
 worker_processes  1;
 
 #error_log  logs/error.log;
@@ -36,14 +38,15 @@ http {
 
         listen       80;
         server_name  localhost;
-        root /vagrant/laravelapp/public;
         #charset koi8-r;
 
         #access_log  logs/host.access.log  main;
 
         location / {
-            root   html;
-            index  index.html index.htm;
+            root /vagrant/laravelapp/public;
+            index  index.php;
+            # root   html;
+            # index  index.html index.htm;
         }
 
         #error_page  404              /404.html;
@@ -70,7 +73,13 @@ http {
         #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
         #    include        fastcgi_params;
         #}
-
+        location ~ \.php$ {
+           root           /vagrant/laravelapp/public;
+           fastcgi_pass   127.0.0.1:9000;
+           fastcgi_index  index.php;
+           fastcgi_param  SCRIPT_FILENAME  /vagrant/laravelapp/public$fastcgi_script_name;
+           include        fastcgi_params;
+        }
         # deny access to .htaccess files, if Apache's document root
         # concurs with nginx's one
         #

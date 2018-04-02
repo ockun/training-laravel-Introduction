@@ -24,6 +24,13 @@ end
 #   action :nothing
 # end
 #
+
+# configure database.php file
 template "/vagrant/laravelapp/config/database.php" do
     source "database_dev.php.erb"
+end
+
+# configure .env file
+template "/vagrant/laravelapp/.env" do
+    source ".env.erb"
 end
