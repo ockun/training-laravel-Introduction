@@ -3,5 +3,5 @@
 /laravelapp/
 /.metadata/
 /RemoteSystemsTempFiles/
-/composer.phar/
+/composer.phar
 /chef-repo/nodes/localhost.json

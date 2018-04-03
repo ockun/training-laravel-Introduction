@@ -49,6 +49,7 @@ service 'mariadb' do
 end
 
 # mysql_secure_install とほぼ同じ事を実施
+# reference https://easyramble.com/chef-mysql-install-config.html
 execute "mysql_secure_install emulate" do
   # 念のため127.0.0.1 & ::1 は削除 戻す場合には "AND Host NOT IN ('localhost');"に追記して
   command <<-EOC
