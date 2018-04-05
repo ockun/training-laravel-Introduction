@@ -32,20 +32,19 @@ end
 rpm_package 'remi-release-7' do
   not_if "rpm -qa | grep -q '^remi-release'"
   source "#{Chef::Config[:file_cache_path]}/remi-release-7.rpm"
-  action [:install, :upgrade]
+  action :install
 end
 
 # php7
-package 'php' do
-  flush_cache [:before]
+yum_package 'php' do
   action [:install, :upgrade]
-  options "--enablerepo=remi --enablerepo=remi-php72"
+  options "--enablerepo=remi-php72"
 end
 
 %w(php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm).each do |pkg|
   package pkg do
     action [:install, :upgrade]
-    options "--enablerepo=remi --enablerepo=remi-php72"
+    options "--enablerepo=remi-php72"
   end
 end
 
