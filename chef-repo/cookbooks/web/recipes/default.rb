@@ -42,18 +42,20 @@ package 'php' do
   options "--enablerepo=remi --enablerepo=remi-php72"
 end
 
-%w(php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm).each do |pkg|
+%w(nginx php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm php-gd).each do |pkg|
   package pkg do
     action [:install, :upgrade]
     options "--enablerepo=remi --enablerepo=remi-php72"
   end
 end
 
-package "nginx"
-
 service 'nginx' do
   action [:enable, :start]
   #supports status: true, restart: true, reload: true
+end
+
+service "php-fpm" do
+  action [:enable, :start]
 end
 
 template '/etc/nginx/nginx.conf' do
@@ -61,5 +63,15 @@ template '/etc/nginx/nginx.conf' do
   owner 'root'
   group 'root'
   mode 0644
-  notifies :reload, 'service[nginx]'
+  notifies :restart, 'service[nginx]'
+  notifies :restart, 'service[php-fpm]'
+end
+
+template '/etc/php-fpm.d/www.conf' do
+  source 'www.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  notifies :restart, 'service[php-fpm]'
+  notifies :restart, 'service[php-fpm]'
 end
