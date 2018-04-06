@@ -32,14 +32,14 @@ end
 package 'php-fpm' do
    flush_cache [:before]
    action [:install, :upgrade]
-   options "--enablerepo=remi --enablerepo=remi-php72"
+   options "--enablerepo=remi-php72"
    notifies :reload, 'service[nginx]'
  end
 
 package 'php-mysqlnd' do
   flush_cache [:before]
   action [:install, :upgrade]
-  options "--enablerepo=remi --enablerepo=remi-php72"
+  options "--enablerepo=remi-php72"
   notifies :reload, 'service[nginx]'
 end
 

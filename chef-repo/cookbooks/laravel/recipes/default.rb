@@ -10,7 +10,7 @@ include_recipe "git::default"
 %w(zip unzip).each do |pkg|
   yum_package pkg do
     action :install
-    # options "--enablerepo=remi --enablerepo=remi-php72"
+    # options "--enablerepo=remi-php72"
   end
 end
 
