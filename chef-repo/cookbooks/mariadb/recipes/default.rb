@@ -25,19 +25,19 @@ end
 end
 
 service 'nginx' do
-  action [:enable, :start]
+  # action [:enable, :start]
   supports status: true, restart: true, reload: true
 end
 
 package 'php-fpm' do
-   flush_cache [:before]
+   # flush_cache [:before]
    action [:install, :upgrade]
    options "--enablerepo=remi-php72"
    notifies :reload, 'service[nginx]'
  end
 
 package 'php-mysqlnd' do
-  flush_cache [:before]
+  # flush_cache [:before]
   action [:install, :upgrade]
   options "--enablerepo=remi-php72"
   notifies :reload, 'service[nginx]'
