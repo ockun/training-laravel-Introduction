@@ -24,8 +24,8 @@ default-character-set = utf8mb4
 # Here follows entries for some specific programs
 
 # The MySQL server
-[server]
-character-set-server = utf8mb4
+# [server]
+# character-set-server = utf8mb4
 
 [mysqld]
 port		= 3306
@@ -40,7 +40,8 @@ read_rnd_buffer_size = 256K
 net_buffer_length = 2K
 thread_stack = 240K
 character-set-server = utf8mb4
-collation_server=utf8mb4_unicode_ci
+collation-server = utf8mb4_unicode_ci
+skip-character-set-client-handshake
 
 # Don't listen on a TCP/IP port at all. This can be a security enhancement,
 # if all processes that need to connect to mysqld run on the same host.
@@ -81,11 +82,13 @@ server-id	= 1
 [mysqldump]
 quick
 max_allowed_packet = 16M
+default-character-set = utf8mb4
 
 [mysql]
 no-auto-rehash
 # Remove the next comment character if you are not familiar with SQL
 #safe-updates
+default-character-set = utf8mb4
 
 [myisamchk]
 key_buffer_size = 8M

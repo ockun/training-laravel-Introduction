@@ -32,17 +32,12 @@ end
 rpm_package 'remi-release-7' do
   not_if "rpm -qa | grep -q '^remi-release'"
   source "#{Chef::Config[:file_cache_path]}/remi-release-7.rpm"
-  action :install
-end
-
-# php7
-yum_package 'php' do
   action [:install, :upgrade]
-  options "--enablerepo=remi-php72"
 end
 
-%w(nginx php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm php-gd).each do |pkg|
+%w(php nginx php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm php-gd).each do |pkg|
   package pkg do
+    flush_cache [:before]
     action [:install, :upgrade]
     options "--enablerepo=remi-php72"
   end
@@ -62,8 +57,8 @@ template '/etc/nginx/nginx.conf' do
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, 'service[nginx]'
-  notifies :restart, 'service[php-fpm]'
+  notifies :reload, 'service[nginx]'
+  notifies :reload, 'service[php-fpm]'
 end
 
 template '/etc/php-fpm.d/www.conf' do
@@ -71,6 +66,6 @@ template '/etc/php-fpm.d/www.conf' do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart, 'service[php-fpm]'
-  notifies :restart, 'service[php-fpm]'
+  notifies :reload, 'service[nginx]'
+  notifies :reload, 'service[php-fpm]'
 end
