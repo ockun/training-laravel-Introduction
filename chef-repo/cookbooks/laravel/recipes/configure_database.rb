@@ -7,7 +7,7 @@
 # create database
 execute "create database" do
  command <<-EOH
-  mysql -u root -p#{node['mariadb']['root_pass']} -e "CREATE DATABASE IF NOT EXISTS #{node['laravel']['database_name']}"
+  mysql -u root -p#{node['mariadb']['root_pass']} -e "CREATE DATABASE IF NOT EXISTS #{node['laravel']['database_name']} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
  EOH
 end
 

@@ -48,6 +48,15 @@ service 'mariadb' do
   supports :status => true, :restart => true, :reload => true
 end
 
+# 設定を反映
+template '/etc/my.cnf.d/server.cnf' do
+  source 'server.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :restart, 'service[mariadb]'
+end
+
 # mysql_secure_install とほぼ同じ事を実施
 # reference https://easyramble.com/chef-mysql-install-config.html
 execute "mysql_secure_install emulate" do
@@ -65,13 +74,4 @@ execute "mysql_secure_install emulate" do
     mysql -u root -p#{node['mariadb']['root_pass']} -e "FLUSH PRIVILEGES;"
   EOC
   only_if "mysql -u root -e 'show databases;'"
-end
-
-# 設定を反映
-template '/etc/my.cnf.d/server.cnf' do
-  source 'server.cnf.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  notifies :restart, 'service[mariadb]'
 end
