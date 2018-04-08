@@ -35,7 +35,11 @@ rpm_package 'remi-release-7' do
   action [:install, :upgrade]
 end
 
+<<<<<<< HEAD
+%w(nginx php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm php-gd).each do |pkg|
+=======
 %w(php nginx php-openssl php-common php-mbstring php-xml php-pdo php-mbstring php-fpm php-gd).each do |pkg|
+>>>>>>> 29b1994b4b7cd00d31e151325beae3fd86677baf
   package pkg do
     flush_cache [:before]
     action [:install, :upgrade]
@@ -57,8 +61,13 @@ template '/etc/nginx/nginx.conf' do
   owner 'root'
   group 'root'
   mode 0644
+<<<<<<< HEAD
+  notifies :restart, 'service[nginx]'
+  notifies :restart, 'service[php-fpm]'
+=======
   notifies :reload, 'service[nginx]'
   notifies :reload, 'service[php-fpm]'
+>>>>>>> 29b1994b4b7cd00d31e151325beae3fd86677baf
 end
 
 template '/etc/php-fpm.d/www.conf' do
@@ -66,6 +75,11 @@ template '/etc/php-fpm.d/www.conf' do
   owner 'root'
   group 'root'
   mode '0644'
+<<<<<<< HEAD
+  notifies :restart, 'service[php-fpm]'
+  notifies :restart, 'service[php-fpm]'
+=======
   notifies :reload, 'service[nginx]'
   notifies :reload, 'service[php-fpm]'
+>>>>>>> 29b1994b4b7cd00d31e151325beae3fd86677baf
 end

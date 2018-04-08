@@ -1,5 +1,12 @@
 
 #user  nobody;
+<<<<<<< HEAD
+user nginx;
+
+=======
+# user nginx;
+# group user;
+>>>>>>> 29b1994b4b7cd00d31e151325beae3fd86677baf
 worker_processes  1;
 
 #error_log  logs/error.log;
@@ -39,11 +46,10 @@ http {
         #charset koi8-r;
 
         #access_log  logs/host.access.log  main;
-        root   /vagrant/laravelapp/public;
+
         location / {
-            #root /vagrant/laravelapp/public;
-            index  index.php index.html index.htm;
-            try_files $uri $uri/ /index.php?$query_string;
+            root /vagrant/laravelapp/public;
+            index  index.php;
             # root   html;
             # index  index.html index.htm;
         }
@@ -73,9 +79,10 @@ http {
         #    include        fastcgi_params;
         #}
         location ~ \.php$ {
-           fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+           root           /vagrant/laravelapp/public;
+           fastcgi_pass   127.0.0.1:9000;
            fastcgi_index  index.php;
-           fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+           fastcgi_param  SCRIPT_FILENAME  /vagrant/laravelapp/public$fastcgi_script_name;
            include        fastcgi_params;
         }
         # deny access to .htaccess files, if Apache's document root

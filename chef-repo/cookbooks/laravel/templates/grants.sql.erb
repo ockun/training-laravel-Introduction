@@ -1,0 +1,5 @@
+# GRANT ALL ON #{node['laravel']['database_name']}.* TO '#{node[\'laravel\'][\'database_user\']}'@'localhost' IDENTIFIED BY '#{node[\'laravel\'][\'database_pass\']}';
+# GRANT ALL ON laravelapp.* TO '#{node[\'laravel\'][\'database_user\']}'@'localhost' IDENTIFIED BY '#{node[\'laravel\'][\'database_pass\']}';
+GRANT ALL ON <%= node['laravel']['database_name'] %>.* TO '<%= node['laravel']['database_user'] %>'@'localhost' IDENTIFIED BY '<%= node['laravel']['database_pass'] %>';
+# GRANT ALL ON laravelapp.* TO 'laravelapp'@'localhost' IDENTIFIED BY 'laravelapp';
+FLUSH PRIVILEGES;

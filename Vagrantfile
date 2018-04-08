@@ -7,10 +7,19 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
+
+  # vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = true # Guest Additionsの自動アップデート
-    config.vbguest.no_remote = false # Guest Additionsのisoファイルをリモートからダウンロード
+    config.vbguest.no_remote = true # Guest Additionsのisoファイルをリモートからダウンロード
   end
+
+  # vagrant-cachier
+  # http://fgrehm.viewdocs.io/vagrant-cachier/usage/
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -76,13 +85,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = './chef-repo/cookbooks'
     chef.add_recipe 'web'
-    # chef.add_recipe 'git'
-    # chef.json = {
-    #   :git => {
-    #     :version    => '2.9.5',
-    #     :source_uri => 'https://git-core.googlecode.com/files/git-2.9.5.tar.gz'
-    #   }
-    # }
+    chef.add_recipe 'mariadb'
+    chef.add_recipe 'laravel'
+    chef.add_recipe 'laravel::configure_database'
   end
   # バージョン指定が有効にならないので一旦ペンド
   # config.vm.provision :chef_solo do |chef|
