@@ -5,3 +5,4 @@
 /RemoteSystemsTempFiles/
 /composer.phar
 /chef-repo/nodes/localhost.json
+.DS_Store

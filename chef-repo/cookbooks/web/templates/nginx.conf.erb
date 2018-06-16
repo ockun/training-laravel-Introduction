@@ -41,7 +41,6 @@ http {
         #access_log  logs/host.access.log  main;
         root   /vagrant/laravelapp/public;
         location / {
-            #root /vagrant/laravelapp/public;
             index  index.php index.html index.htm;
             try_files $uri $uri/ /index.php?$query_string;
             # root   html;

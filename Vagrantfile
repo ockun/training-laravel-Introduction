@@ -43,6 +43,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network :forwarded_port, guest: 22, host: 2222
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -58,6 +59,21 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "./laravelapp", "/var/web/laravelapp",
+    type: "rsync",
+    owner: "vagrant",
+    group: "vagrant",
+    rsync__args: [
+      "--compress",
+      "--verbose",
+      "--archive",
+      "--delete",
+      "--copy-links",
+      "--chmod=Du=rwx,Dgo=rx,Fu=rwx,Fog=rx",
+    ],
+    rsync__chown: true
+
+    config.vm.provision "shell", run: "always", inline: "chmod -R 777 /var/web/laravelapp/storage"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -81,6 +97,8 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+
   config.omnibus.chef_version=:latest
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = './chef-repo/cookbooks'
@@ -89,16 +107,5 @@ Vagrant.configure("2") do |config|
     chef.add_recipe 'laravel'
     chef.add_recipe 'laravel::configure_database'
   end
-  # バージョン指定が有効にならないので一旦ペンド
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = './chef-repo/cookbooks'
-  #   chef.add_recipe 'git'
-  #   # jsonファイル作る代わりにこう書く
-  #   chef.json = {
-  #     :git => {
-  #       :version    => '2.9.5',
-  #       :source_uri => 'https://git-core.googlecode.com/files/git-2.9.5.tar.gz'
-  #     }
-  #   }
-  # end
+
 end
