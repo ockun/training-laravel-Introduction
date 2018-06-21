@@ -54,26 +54,7 @@ Vagrant.configure("2") do |config|
   # your network.
   # config.vm.network "public_network"
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "./laravelapp", "/var/web/laravelapp",
-    type: "rsync",
-    owner: "vagrant",
-    group: "vagrant",
-    rsync__args: [
-      "--compress",
-      "--verbose",
-      "--archive",
-      "--delete",
-      "--copy-links",
-      "--chmod=Du=rwx,Dgo=rx,Fu=rwx,Fog=rx",
-    ],
-    rsync__chown: true
 
-    config.vm.provision "shell", run: "always", inline: "chmod -R 777 /var/web/laravelapp/storage"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -106,6 +87,50 @@ Vagrant.configure("2") do |config|
     chef.add_recipe 'mariadb'
     chef.add_recipe 'laravel'
     chef.add_recipe 'laravel::configure_database'
+    chef.add_recipe 'xdebug'
   end
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "./", "/var/app",
+                          type: "rsync",
+                          owner: "vagrant",
+                          group: "vagrant",
+                          rsync__args: [
+                              "--compress",
+                              "--verbose",
+                              "--archive",
+                              "--delete",
+                              "--copy-links",
+                              "--chmod=Du=rwx,Dgo=rx,Fu=rwx,Fog=rx",
+                          ],
+                          rsync__auto: true,
+                          rsync__chown: true,
+                          rsync__exclude: ["./laravelapp/storage", "./.idea", "./.git", "./.vagrant"],
+                          rsync__verbose: true
+
+  # config.vm.synced_folder "./", "/var/app",
+  #                         create: true,
+  #                         type: "nfs"
+
+  # config.vm.bindfs.bind_folder "/host_mount","/var/apps",
+  # :owner => "vagrant",
+  # :group => "vagrant",
+  # :'create-as-user' => true,
+  # :perms => "u=rwx:g=rwx:o=rwx",
+  # :'create-with-perms' => "u=rwx:g=rwx:o=rwx",
+  # :'chown-ignore' => true,
+  # :'chgrp-ignore' => true,
+  # :'chmod-ignore' => true
+
+  # config.nfs.map_uid = :auto
+  # config.nfs.map_gid = :auto
+  # config.nfs.map_uid = 'okuyama'
+  # config.nfs.map_gid = 'staff'
+  #
+  # config.vm.provision "shell", run: "always", inline: "chmod -R 777 /var/app/laravelapp/storage"
 
 end

@@ -36,3 +36,17 @@ execute "create-lanavel-project" do
     not_if { File.exists?("/vagrant/laravelapp") } # @todo
     action :run
 end
+
+directory '/var/app/laravelapp/storage' do
+  group                      "vagrant"
+  # inherits                   true
+  mode                       777
+  # notifies                   # see description
+  owner                      "vagrant"
+  # path                       String # defaults to 'name' if not specified
+  recursive                  true
+  # rights                     Hash
+  # subscribes                 # see description
+  action                     :create
+end
+

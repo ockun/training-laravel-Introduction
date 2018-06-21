@@ -1,0 +1,19 @@
+; @author k.okuyama@fosbury.co.jp
+; @date 2018/6/18
+; @reference https://luftgarden.work/phpstorm-xdebug-vagrant/
+
+zend_extension=/usr/lib64/php/modules/xdebug.so
+
+xdebug.remote_enable=on
+xdebug.remote_autostart=on
+xdebug.remote_handler=dbgp
+
+xdebug.remote_host=192.168.33.1
+;VM の private_network が 192.168.33.xxx であれば
+;ホスト側IPとして 192.168.33.1 を指定する必要があります。
+
+xdebug.remote_port=9001
+;デフォルトは9000ですが、上手く動作しないケースがあるようなので9001に変更します。
+
+xdebug.idekey="phpstorm"
+;任意の文字列で構いませんが、分かりやすいキーにしておきます。

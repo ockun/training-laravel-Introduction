@@ -19,7 +19,7 @@ end
 # 本体のインストール
 %w(mariadb mariadb-server).each do |pkg|
   yum_package pkg do
-    action :install
+    action [:install, :upgrade]
     options "--enablerepo=mariadb"
   end
 end
