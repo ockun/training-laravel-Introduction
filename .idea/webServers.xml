@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="ffadf30e-05c8-421f-aed1-ff25a3b16f3f" name="vagrant" url="http://192.168.33.10">
+      <webServer id="ffadf30e-05c8-421f-aed1-ff25a3b16f3f" name="vagrant SFTP" url="http://192.168.33.10">
         <fileTransfer host="192.168.33.10" port="22" rootFolder="/var/app" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
